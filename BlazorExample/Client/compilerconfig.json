@@ -1,0 +1,26 @@
+﻿[
+  {
+    "outputFile": "**/*.razor.css",
+    "inputFile": "**/*.razor.scss"
+  },
+  {
+    "outputFile": "Shared/ProductList.razor.css",
+    "inputFile": "Shared/ProductList.razor.scss"
+  },
+  {
+    "outputFile": "Pages/ProductDetail.razor.css",
+    "inputFile": "Pages/ProductDetail.razor.scss"
+  },
+  {
+    "outputFile": "Shared/HomeButton.razor.css",
+    "inputFile": "Shared/HomeButton.razor.scss"
+  },
+  {
+    "outputFile": "Shared/FeaturedProducts.razor.css",
+    "inputFile": "Shared/FeaturedProducts.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Cart.razor.css",
+    "inputFile": "Pages/Cart.razor.scss"
+  }
+]

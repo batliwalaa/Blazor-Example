@@ -1,0 +1,33 @@
+﻿@using System.Linq;
+
+<h2 data-testid="featured-products-title">Top Products of Today</h2>
+
+@if (ProductService?.Products == null || !ProductService.Products.Any())
+{
+  <span>@ProductService?.Message</span>
+}
+else
+{
+  <div class="container">
+    @foreach (Product product in ProductService.Products)
+    {
+      @if (product.Featured)
+      {
+        <div data-testid="featured-product-item" class="featured-product">
+          <div>
+            <a data-testid="featured-product-img-link" href="/product/@product.Id">
+              <img src="@product.ImageUrl" alt="@product.Title" />
+            </a>
+          </div>
+          <h4><a data-testid="featured-product-title" href="/product/@product.Id">@product.Title</a></h4>
+          @if (product.Variants?.Any() ?? false)
+          {
+            <h5 data-testid="featured-product-price" class="price">
+              $@product.Variants.First().Price
+            </h5>
+          }
+        </div>
+      }
+    }
+  </div>
+}

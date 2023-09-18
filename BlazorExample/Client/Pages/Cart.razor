@@ -1,0 +1,30 @@
+﻿@page "/cart"
+@inherits FluxorComponent
+
+<PageTitle>Shopping Cart</PageTitle>
+<h3>Shopping Cart</h3>
+
+@if (CartState?.Value.CurrentCartItemsCount == 0)
+{
+  <span>Your cart is empty.</span>
+}
+else
+{
+  <div>
+    @foreach (var cartItem in CartItems)
+    {
+      <div class="container">
+        <div class="image-wrapper">
+          <img src="@cartItem.ImageUrl" class="image" />
+        </div>
+        <div class="name">
+          <h5><a href="/product/@cartItem.ProductId">@cartItem.Title</a></h5>
+          <span>@cartItem.ProductTypeName</span><br />
+          <button class="btn-delete" @onclick="(() => RemoveCartItem(cartItem))">Remove</button>
+        </div>
+        <div class="product-price">$@cartItem.Price</div>
+      </div>
+    }
+    <div class="product-price">Total (@CartItems.Count()): $@CartItems.Sum(x => x.Price)</div>
+  </div>
+}

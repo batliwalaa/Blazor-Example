@@ -1,0 +1,32 @@
+﻿<div class="top-row ps-3 navbar navbar-dark navbar-toggler-wrapper">
+  <div class="container-fluid">
+    <button data-testid="button-toggle-menu" title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+  <nav class="flex-nav">
+    <div class="nav-item px-2">
+      <NavLink data-testid="nav-link-home" class="nav-link" href="" Match="NavLinkMatch.All">
+        Home
+      </NavLink>
+    </div>
+
+    @if (CategoryResponse?.Data != null)
+    {
+      @foreach (var category in CategoryResponse.Data)
+      {
+        string categoryLinkTestId = $"nav-link-{category.Url}";
+
+        <div class="nav-item px-2">
+          <NavLink data-testid="@categoryLinkTestId" class="nav-link" href="@category.Url">
+            @category.Name
+          </NavLink>
+        </div>
+      }
+    }
+
+  </nav>
+</div>

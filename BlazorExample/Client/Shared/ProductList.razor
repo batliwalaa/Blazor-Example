@@ -1,0 +1,33 @@
+﻿@if (ProductService?.Products == null || !ProductService.Products.Any())
+{
+  <span data-testid="list-message">@ProductService?.Message</span>
+}
+else
+{
+  <ul class="list-unstyled">
+    @foreach (var product in ProductService.Products)
+    {
+      <li data-testid="list-item" class="media my-3">
+        <div class="media-img-wrapper mr-2">
+          <a data-testid="list-item-detail-img-link" href="/product/@product.Id">
+            <img data-testid="list-item-image" class="media-img" src="@product.ImageUrl" alt="@product.Title" />
+          </a>
+        </div>
+        <div class="media-body">
+          <a data-testid="list-item-detail-title-link" href="/product/@product.Id">
+            <h4 data-testid="list-item-title" class="mb-6">@product.Title</h4>
+          </a>
+          <p data-testid="list-item-description">@product.Description</p>
+          <h5 data-testid="list-item-price" class="price">@GetPriceText(product)</h5>
+        </div>
+      </li>
+    }
+  </ul>
+
+  for (int i = 1; i <= ProductService.PageCount; i++)
+  {
+    <a data-testid="btn-pageno-@i"
+       class="btn @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info") page-selection"
+       href="/search/@ProductService.LastSearchText/@i">@i</a>
+  }
+}

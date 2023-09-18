@@ -1,0 +1,22 @@
+﻿<div class="input-group">
+  <input data-testid="search-input" @bind-value="_searchTerm" @bind-value:event="oninput"
+         type="search"
+         list="products"
+  @onkeyup="HandleSearch"
+         placeholder="Search..."
+         class="form-control"
+  @ref="_searchInput" />
+
+  <datalist data-testid="search-datalist" id="products">
+    @foreach (var s in _suggestions)
+    {
+      <option>@s</option>
+    }
+  </datalist>
+
+  <div class="input-group-append">
+    <button data-testid="search-button" class="btn btn-primary" @onclick="SearchProducts">
+      <span class="oi oi-magnifying-glass"></span>
+    </button>
+  </div>
+</div>

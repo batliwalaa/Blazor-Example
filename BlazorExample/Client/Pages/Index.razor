@@ -1,0 +1,16 @@
+﻿@using BlazorExample.Client.Services.Product;
+
+@page "/"
+@page "/search/{searchText}/{page:int}"
+@page "/{categoryUrl}"
+
+<PageTitle>My Shop</PageTitle>
+
+@if (string.IsNullOrWhiteSpace(SearchText) && string.IsNullOrWhiteSpace(CategoryUrl))
+{
+  <FeaturedProducts />
+}
+else
+{
+  <ProductList />
+}

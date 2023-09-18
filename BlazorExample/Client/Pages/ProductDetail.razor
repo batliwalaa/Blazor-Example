@@ -1,0 +1,48 @@
+﻿@page "/product/{id:int}"
+
+<PageTitle>Product Detail [@Id]</PageTitle>
+
+@if (Detail == null)
+{
+  <span>@Message</span>
+}
+else
+{
+  <div class="media">
+    <div class="media-img-wrapper mr-2">
+      <img data-testid="product-image" class="media-img" src="@Detail.ImageUrl" alt="@Detail.Title" />
+    </div>
+    <div class="media-body">
+      <h2 data-testid="product-title" class="mb-0">@Detail.Title</h2>
+      <p data-testid="product-description">@Detail.Description</p>
+
+      @if (Detail?.Variants?.Any() ?? false)
+      {
+        <div class="mb-3">
+          <select data-testid="product-variants" class="form-select" @bind="CurrentProductTypeId">
+            @foreach (var variant in Detail.Variants)
+            {
+              <option value="@variant.ProductTypeId">@variant.ProductType?.Name</option>
+            }
+          </select>
+        </div>
+      }
+
+      @if (SelectedVariant != null)
+      {
+        if (SelectedVariant.OriginalPrice > SelectedVariant.Price)
+        {
+          <h6 data-testid="product-original-price" class="text-muted original-price">
+            $@SelectedVariant.OriginalPrice
+          </h6>
+        }
+        <h4 data-testid="product-price" class="price">
+          $@SelectedVariant.Price
+        </h4>
+      }
+      <button data-testid="button-addtocart" class="btn btn-primary" @onclick="AddToCart">
+        <i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart
+      </button>
+    </div>
+  </div>
+}

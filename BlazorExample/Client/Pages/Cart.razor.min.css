@@ -1,0 +1,1 @@
+﻿.container{display:flex;padding:6px;}.container .image-wrapper{width:150px;text-align:center;}.container .image-wrapper .image{max-height:150px;max-width:150px;padding:6px;}.container .name{flex-grow:1;padding:6px;}.product-price{font-weight:600;text-align:right;}
