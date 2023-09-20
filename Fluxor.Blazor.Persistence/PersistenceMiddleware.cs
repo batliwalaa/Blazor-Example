@@ -1,21 +1,18 @@
-﻿using Blazored.LocalStorage;
-using Fluxor.Blazor.Persistence.Store;
+﻿using Fluxor.Blazor.Web.Middlewares.Routing;
+using System.Text.Json;
 
 namespace Fluxor.Blazor.Persistence;
 
 internal sealed class PersistenceMiddleware : Middleware
 {
   private IStore? _store;
-  private PersistOtions _persistOtions;
   private readonly LocalStoragePersistenceService _localStoragePersistenceService;
   private IDispatcher? _dispatcher;
   private readonly object SyncRoot = new();
 
   public PersistenceMiddleware(
-    PersistOtions persistOtions,
     LocalStoragePersistenceService localStoragePersistenceService)
   {
-    _persistOtions = persistOtions;
     _localStoragePersistenceService = localStoragePersistenceService;
   }
 
@@ -24,6 +21,26 @@ internal sealed class PersistenceMiddleware : Middleware
     _store = store;
     _dispatcher = dispatcher;
 
+    foreach (IFeature feature in _store.Features.Values.OrderBy(x => x.GetName()))
+    {
+      string featureState = await _localStoragePersistenceService.LoadAsync(feature.GetName()).ConfigureAwait(false);
+      if (!string.IsNullOrWhiteSpace(featureState))
+      {
+        var state = JsonSerializer.Deserialize(featureState, feature.GetStateType());
+        feature.RestoreState(state);
+
+        if (feature.GetName() == "@routing")
+        {
+          string? routeUri = (state as RoutingState)?.Uri;
+
+          if (!string.IsNullOrWhiteSpace(routeUri))
+          {
+            _dispatcher.Dispatch(new GoAction(routeUri));
+          }
+        }
+      }
+    }
+
     await Task.CompletedTask;
   }
 
@@ -31,28 +48,14 @@ internal sealed class PersistenceMiddleware : Middleware
   {
     lock (SyncRoot)
     {
-      IDictionary<string, object> state = GetState();
-      _localStoragePersistenceService.SaveAsync(state).ConfigureAwait(false);
-    }
-  }
-
-
-  public override void AfterInitializeAllMiddlewares()
-  {
-    _dispatcher?.Dispatch(new LoadPersistedStateAction());
-  }
-
-  private IDictionary<string, object> GetState()
-  {
-    var state = new Dictionary<string, object>();
-    if (_store != null)
-    {
-      foreach (IFeature feature in _store.Features.Values.OrderBy(x => x.GetName()))
+      if (_store != null)
       {
-        state[feature.GetName()] = feature.GetState();
+        foreach (IFeature feature in _store.Features.Values.OrderBy(x => x.GetName()))
+        {
+          _localStoragePersistenceService.SaveAsync(
+            feature.GetName(), feature.GetState()).ConfigureAwait(false);
+        }
       }
     }
-
-    return state;
   }
 }

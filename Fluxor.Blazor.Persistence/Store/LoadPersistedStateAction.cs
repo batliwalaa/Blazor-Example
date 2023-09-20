@@ -2,10 +2,10 @@
 
 public class LoadPersistedStateAction
 {
-  public IDictionary<string, object> State { get; private set; }
+  public IReadOnlyDictionary<string, IFeature> Features { get; set; }
 
-  public LoadPersistedStateAction(IDictionary<string, object> state)
+  public LoadPersistedStateAction(IReadOnlyDictionary<string, IFeature> features)
   {
-    State = state;
+    Features = features;
   }
 }

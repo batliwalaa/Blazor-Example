@@ -1,5 +1,4 @@
 global using BlazorExample.Shared;
-using Blazored.LocalStorage;
 using BlazorExample.Client;
 using BlazorExample.Client.Services.Category;
 using BlazorExample.Client.Services.Product;
@@ -18,7 +17,8 @@ builder.Services
   .AddFluxor(o =>
   {
     o.ScanAssemblies(typeof(Program).Assembly)
-    .UseFluxorPersistence(options => options.PersistenceType = PersistenceType.LocalStorage)
+    .UseRouting()
+    .UsePersistence(options => options.PersistenceType = PersistenceType.LocalStorage)
     .UseReduxDevTools();
   });
 builder.Services.AddScoped(sp =>

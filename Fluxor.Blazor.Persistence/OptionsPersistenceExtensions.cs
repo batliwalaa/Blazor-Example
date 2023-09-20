@@ -6,7 +6,7 @@ namespace Fluxor.Blazor.Persistence;
 
 public static class OptionsPersistenceExtensions
 {
-  public static FluxorOptions UseFluxorPersistence(
+  public static FluxorOptions UsePersistence(
     this FluxorOptions options,
     Action<PersistOtions>? configurePersistOptions)
   {

@@ -21,7 +21,7 @@ public static class CartReducers
     if (state.CartItems != null)
     {
       var items = state.CartItems.ToList();
-      var itemToRemove = items.Find(i => 
+      var itemToRemove = items.Find(i =>
         i.ProductId == action.Item.ProductId && i.ProductTypeId == action.Item.ProductTypeId);
 
       if (itemToRemove != null)
@@ -32,6 +32,6 @@ public static class CartReducers
       return state with { CartItems = items, CurrentCartItemsCount = items.Count() };
     }
 
-    return state;    
+    return state;
   }
 }
