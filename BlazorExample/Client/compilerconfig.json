@@ -22,5 +22,17 @@
   {
     "outputFile": "Pages/Cart.razor.css",
     "inputFile": "Pages/Cart.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Register.razor.css",
+    "inputFile": "Pages/Register.razor.scss"
+  },
+  {
+    "outputFile": "Shared/UserButton.razor.css",
+    "inputFile": "Shared/UserButton.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Login.razor.css",
+    "inputFile": "Pages/Login.razor.scss"
   }
 ]

@@ -7,22 +7,34 @@ namespace BlazorExample.Client.Pages;
 public partial class Cart
 {
   [Inject]
-  public IState<CartState>? CartState { get; init; }
+  private IState<CartState>? CartState { get; init; }
 
   [Inject]
-  public IDispatcher? dispatcher { get; init; }
+  private IDispatcher? Dispatcher { get; init; }
 
-  public IEnumerable<CartItem> CartItems
+  private IEnumerable<CartItem> CartItems
   {
     get => CartState?.Value.CartItems ?? Enumerable.Empty<CartItem>();
   }
 
-  public void RemoveCartItem(CartItem cartItem)
+  private void RemoveCartItem(CartItem cartItem)
   {
-    if (dispatcher != null && cartItem != null)
+    if (Dispatcher != null && cartItem != null)
     {
-      dispatcher.Dispatch(new CartRemoveItemAction(cartItem));
+      Dispatcher.Dispatch(new CartRemoveItemAction(cartItem));
     }
+  }
+
+  private void UpdateCartItemQuantity(ChangeEventArgs changeEvent, CartItem cartItem)
+  {
+    cartItem.Qantity = int.Parse(changeEvent.Value?.ToString() ?? "0");
+
+    if (cartItem.Qantity < 1)
+    {
+      cartItem.Qantity = 1;
+    }
+
+    Dispatcher?.Dispatch(new CartUpdateItemQuantityAction(cartItem));
   }
 
   protected override void OnInitialized()

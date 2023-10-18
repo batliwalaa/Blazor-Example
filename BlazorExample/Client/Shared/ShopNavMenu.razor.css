@@ -47,6 +47,10 @@
   flex-direction: column;
 }
 
+.push-right {
+  margin-left: auto;
+}
+
 @media (min-width: 641px) {
   .navbar-toggler, .navbar-toggler-wrapper {
     display: none;

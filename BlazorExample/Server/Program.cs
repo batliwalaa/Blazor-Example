@@ -1,8 +1,9 @@
+global using BlazorExample.Server.Data;
 global using BlazorExample.Shared;
 global using Microsoft.EntityFrameworkCore;
-global using BlazorExample.Server.Data;
-using BlazorExample.Server.Services.Product;
+using BlazorExample.Server.Services.Authentication;
 using BlazorExample.Server.Services.Category;
+using BlazorExample.Server.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -35,9 +37,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
 app.Run();

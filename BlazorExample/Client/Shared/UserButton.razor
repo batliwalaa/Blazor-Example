@@ -1,0 +1,20 @@
+﻿<div class="dropdown">
+  <button 
+    @onclick="ToggleUserMenu"
+    @onfocusout="HideUserMenu"
+    class="btn btn-secondary dropdown-toggle user-button"
+  >
+    <i class="oi oi-person" />
+  </button>
+  <div class="dropdown-menu dropdown-menu-right @UserMenuCssClass">
+    <AuthorizeView>
+      <Authorized>
+        <button class="dropdown-item" @onclick="Logout">Logout</button>
+      </Authorized>
+      <NotAuthorized>
+        <a href="login" class="dropdown-item">Login</a>
+        <a href="register" class="dropdown-item">Register</a>
+      </NotAuthorized>
+    </AuthorizeView>
+  </div>
+</div>

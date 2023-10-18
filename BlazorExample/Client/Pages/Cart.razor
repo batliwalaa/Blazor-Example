@@ -6,25 +6,32 @@
 
 @if (CartState?.Value.CurrentCartItemsCount == 0)
 {
-  <span>Your cart is empty.</span>
+  <span data-testid="empty-cart-message">Your cart is empty.</span>
 }
 else
 {
   <div>
     @foreach (var cartItem in CartItems)
     {
-      <div class="container">
+      <div data-testid="cart-item" class="container">
         <div class="image-wrapper">
-          <img src="@cartItem.ImageUrl" class="image" />
+          <img data-testid="cart-item-image" src="@cartItem.ImageUrl" class="image" />
         </div>
         <div class="name">
-          <h5><a href="/product/@cartItem.ProductId">@cartItem.Title</a></h5>
-          <span>@cartItem.ProductTypeName</span><br />
-          <button class="btn-delete" @onclick="(() => RemoveCartItem(cartItem))">Remove</button>
+          <h5><a data-testid="cart-item-detail" href="/product/@cartItem.ProductId">@cartItem.Title</a></h5>
+          <span data-testid="cart-item-product-type">@cartItem.ProductTypeName</span><br />
+          <input
+              data-testid="cart-item-quantity"
+              min="1"
+              type="number" 
+              class="form-control input-quantity"
+              value="@cartItem.Qantity"
+              @onchange="((e) => UpdateCartItemQuantity(e, cartItem))"/>
+          <button data-testid="cart-item-remove" class="btn-delete" @onclick="(() => RemoveCartItem(cartItem))">Remove</button>
         </div>
-        <div class="product-price">$@cartItem.Price</div>
+        <div data-testid="cart-item-product-price" class="product-price">$@(cartItem.Price * cartItem.Qantity)</div>
       </div>
     }
-    <div class="product-price">Total (@CartItems.Count()): $@CartItems.Sum(x => x.Price)</div>
+    <div data-testid="cart-total-price" class="product-price">Total (@CartItems.Sum(x => x.Qantity)): $@CartItems.Sum(x => x.Price * x.Qantity)</div>
   </div>
 }

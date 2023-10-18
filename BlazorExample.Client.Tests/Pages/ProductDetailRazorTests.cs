@@ -217,7 +217,62 @@ public class ProductDetailRazorTests : TestContext
             ImageUrl = "Image Url",
             Title = "Product Title",
             ProductTypeName = "Product Type",
-            Price = 12.99m
+            Price = 12.99m,
+            Qantity = 1,
+          });
+      }
+    }
+
+    [Fact]
+    public void When_AddToCart_Clicked_For_ItemAlreadyAdded_ToCart()
+    {
+      // Arrange.
+      ResponseResult<Product> response = new(HttpStatusCode.OK)
+      {
+        Success = true,
+        Data = new Product
+        {
+          Title = "Product Title",
+          ImageUrl = "Image Url",
+          Description = "Product Description",
+          Variants = new List<ProductVariant>
+          {
+            new ProductVariant
+            {
+              ProductId = 1,
+              Price = 12.99m,
+              OriginalPrice = 12.99m,
+              ProductTypeId = 2,
+              ProductType = new ProductType { Id = 2, Name = "Product Type" }
+            }
+          }
+        }
+      };
+      _productServiceMock.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(response);
+      IRenderedComponent<ProductDetail> cut =
+          RenderComponent<ProductDetail>(parameters => parameters.Add(p => p.Id, 1));
+      IState<CartState> state = Services.GetRequiredService<IState<CartState>>();
+      cut.Find("[data-testid='button-addtocart']").Click();
+
+      // Act.
+      cut.Find("[data-testid='button-addtocart']").Click();
+
+      // Assert.
+      using (new AssertionScope())
+      {
+        state.Value.CurrentCartItemsCount.Should().Be(2);
+        state.Value.CartItems.Should().NotBeNullOrEmpty();
+        state.Value.CartItems?.First()
+          .Should()
+          .BeEquivalentTo(new CartItem
+          {
+            ProductId = 1,
+            ProductTypeId = 2,
+            ImageUrl = "Image Url",
+            Title = "Product Title",
+            ProductTypeName = "Product Type",
+            Price = 12.99m,
+            Qantity = 2,
           });
       }
     }

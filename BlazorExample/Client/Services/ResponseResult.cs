@@ -2,7 +2,7 @@
 
 namespace BlazorExample.Client.Services;
 
-public class ResponseResult<T> : Result<T> where T : class
+public class ResponseResult<T> : Result<T>
 {
   public ResponseResult(HttpStatusCode statusCode)
   {
